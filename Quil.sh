@@ -45,8 +45,8 @@ if [ ! -d "$bin_dir" ]; then
 fi
 
 mv /usr/bin/grpcurl $HOME/go/bin/grpcurl
-echo 'export PATH="$HOME/go/bin:$PATH"' >> /etc/bashrc
-source ~/.bashrc
+echo 'export PATH="$HOME/go/bin:$PATH"' >> /etc/bash.bashrc
+source /etc/bash.bashrc
 
 mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
 
