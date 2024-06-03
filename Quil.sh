@@ -45,7 +45,7 @@ if [ ! -d "$bin_dir" ]; then
 fi
 
 mv /usr/bin/grpcurl $HOME/go/bin/grpcurl
-echo 'export PATH="$HOME/go/bin:$PATH"' >> ~/.bashrc
+echo 'export PATH="$HOME/go/bin:$PATH"' >> /etc/bashrc
 source ~/.bashrc
 
 mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
@@ -103,14 +103,10 @@ function check_peerid() {
 
 # 5. 获取PeerManifests信息
 function get_PeerManifests() {
-	# 修改配置文件 .config/config.yml
-	sed -i 's/listenGrpcMultiaddr:.*/listenGrpcMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8337"/' ~/ceremonyclient/node/.config/config.yml
-	sed -i 's/listenRESTMultiaddr:.*/listenRESTMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8338"/' ~/ceremonyclient/node/.config/config.yml
-
 	# 检查 .config/config.yml 配置结果
 	grep -E 'listenGrpcMultiaddr|listenRESTMultiaddr' ~/ceremonyclient/node/.config/config.yml
 	# 获取节点的 peer_id 并使用 base58 解码，再进行 base64 编码，并使用 grpcurl 获取 PeerManifests 信息
-	peer_id=$(grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNodeInfo | grep -o '"peerId": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | base58 -d | base64) && grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep -A 15 -B 1 "$peer_id"
+	peer_id=$($HOME/go/bin/grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNodeInfo | grep -o '"peerId": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | base58 -d | base64) && $HOME/go/bin/grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetPeerManifests | grep -A 15 -B 1 "$peer_id"
 }
 
 # 6. 检查节点是否可见
