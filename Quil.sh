@@ -123,7 +123,7 @@ function check_vaild() {
 	)
 
 	# Run the grpcurl command and capture its output
-	output=$(grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNetworkInfo)
+	output=$($HOME/go/bin/grpcurl -plaintext localhost:8337 quilibrium.node.node.pb.NodeService.GetNetworkInfo)
 
 	# Check if any of the specific peers are in the output
 	visible=false
