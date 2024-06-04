@@ -54,6 +54,9 @@ mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
 cd ~ && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
 cd ~/ceremonyclient/ && git checkout release
 
+##设置cpu使用率
+find /root/ceremonyclient/node/ -type f -name release_autorun.sh -exec sed -i 's/cpulimit -l [0-9]\+/cpulimit -l 90/g' {} +
+
 ##写入服务文件
 echo '[Unit]
 Description=Ceremony Client Go App Service
@@ -69,9 +72,9 @@ CPUQuota=vcpuconut%
 [Install]
 WantedBy=multi-user.target' > /lib/systemd/system/ceremonyclient.service
 
-##更改cpu使用率
+##更改cpu使用率,此设置没效果
 vcpuconut=$(nproc)
-sed -i "s/CPUQuota=vcpuconut%/CPUQuota=$(($vcpuconut * 100))%/g"  /lib/systemd/system/ceremonyclient.service
+sed -i "s/CPUQuota=vcpuconut%/CPUQuota=$(($vcpuconut * 90))%/g"  /lib/systemd/system/ceremonyclient.service
 
 ##加载服务并启动
 sudo systemctl daemon-reload && sudo systemctl enable ceremonyclient
@@ -91,6 +94,7 @@ function listen_addr() {
 # 修改配置文件 .config/config.yml
 sed -i 's/listenGrpcMultiaddr:.*/listenGrpcMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8337"/' ~/ceremonyclient/node/.config/config.yml
 sed -i 's/listenRESTMultiaddr:.*/listenRESTMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8338"/' ~/ceremonyclient/node/.config/config.yml
+sed -i 's/\/ip4\/0.0.0.0\/udp\/8336\/quic/\/ip4\/0.0.0.0\/tcp\/8336/g' /root/ceremonyclient/node/.config/config.yml
 
 # 检查 .config/config.yml 配置结果
 grep -E 'listenGrpcMultiaddr|listenRESTMultiaddr' ~/ceremonyclient/node/.config/config.yml
