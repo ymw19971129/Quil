@@ -199,6 +199,7 @@ function main_menu() {
     echo "8. 停止节点"
     echo "9. 卸载节点"
     echo "10. 升级节点"
+    echo "11. 查询余额"
 
     read -p "请输入选项（1-11）: " OPTION
 
