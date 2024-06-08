@@ -163,7 +163,24 @@ function clear_service() {
 	rm -rf /root/ceremonyclient
 }
 
-
+# 10.升级节点
+function upgrad_service() {
+	# switch to Gitlab repo of Cassie
+	cd ~/ceremonyclient
+	git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git
+	git pull
+	# end of switch code block
+	service ceremonyclient stop  
+	cd ~/ceremonyclient 
+	git reset --hard origin/release-cdn
+	git fetch --all
+	git clean -df
+	git merge origin/release-cdn
+	cd ~/ceremonyclient/node
+	sed -i 's/ExecStart=\/root\/ceremonyclient\/node\/node-1.4.18-linux-amd64/ExecStart=\/root\/ceremonyclient\/node\/node-1.4.19-linux-amd64/g' /lib/systemd/system/ceremonyclient.service
+	systemctl daemon-reload
+	service ceremonyclient start
+}
 
 # 主菜单
 function main_menu() {
@@ -176,6 +193,7 @@ function main_menu() {
     echo "7. 重启节点"
     echo "8. 停止节点"
     echo "9. 卸载节点"
+    echo "10. 升级节点"
 
     read -p "请输入选项（1-9）: " OPTION
 
@@ -189,6 +207,7 @@ function main_menu() {
 	7) restart_service ;;
 	8) stop_service ;;
 	9) clear_service ;;
+	10) upgrad_service ;;
     *) echo "无效选项。" ;;
     esac
 }
