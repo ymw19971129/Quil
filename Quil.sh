@@ -52,10 +52,10 @@ mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
 
 ##切换分支
 cd ~ && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
-cd ~/ceremonyclient/ && git checkout release
+cd ~/ceremonyclient/ && git checkout release-cdn
 
 ##设置cpu使用率
-find /root/ceremonyclient/node/ -type f -name release_autorun.sh -exec sed -i 's/cpulimit -l [0-9]\+/cpulimit -l 90/g' {} +
+##find /root/ceremonyclient/node/ -type f -name release_autorun.sh -exec sed -i 's/cpulimit -l [0-9]\+/cpulimit -l 90/g' {} +
 
 ##写入服务文件
 echo '[Unit]
