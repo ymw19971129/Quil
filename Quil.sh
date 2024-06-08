@@ -94,7 +94,7 @@ function listen_addr() {
 # 修改配置文件 .config/config.yml
 sed -i 's/listenGrpcMultiaddr:.*/listenGrpcMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8337"/' ~/ceremonyclient/node/.config/config.yml
 sed -i 's/listenRESTMultiaddr:.*/listenRESTMultiaddr: "\/ip4\/127.0.0.1\/tcp\/8338"/' ~/ceremonyclient/node/.config/config.yml
-sed -i 's/\/ip4\/0.0.0.0\/udp\/8336\/quic/\/ip4\/0.0.0.0\/tcp\/8336/g' /root/ceremonyclient/node/.config/config.yml
+##sed -i 's/\/ip4\/0.0.0.0\/udp\/8336\/quic/\/ip4\/0.0.0.0\/tcp\/8336/g' /root/ceremonyclient/node/.config/config.yml
 
 # 检查 .config/config.yml 配置结果
 grep -E 'listenGrpcMultiaddr|listenRESTMultiaddr' ~/ceremonyclient/node/.config/config.yml
