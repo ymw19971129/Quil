@@ -74,7 +74,7 @@ WantedBy=multi-user.target' > /lib/systemd/system/ceremonyclient.service
 
 ##更改cpu使用率,此设置没效果
 vcpuconut=$(nproc)
-sed -i "s/CPUQuota=vcpuconut%/CPUQuota=$(($vcpuconut * 90))%/g"  /lib/systemd/system/ceremonyclient.service
+sed -i "s/CPUQuota=vcpuconut%/CPUQuota=$(($vcpuconut * 95))%/g"  /lib/systemd/system/ceremonyclient.service
 
 ##加载服务并启动
 sudo systemctl daemon-reload && sudo systemctl enable ceremonyclient
