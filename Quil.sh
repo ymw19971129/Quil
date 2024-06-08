@@ -102,7 +102,7 @@ grep -E 'listenGrpcMultiaddr|listenRESTMultiaddr' ~/ceremonyclient/node/.config/
 
 # 4. 检查peerid
 function check_peerid() {
-	cd ~/ceremonyclient/node && ./node-1.4.18-linux-amd64 --peer-id
+	cd ~/ceremonyclient/node && ./node-1.4.19-linux-amd64 --peer-id
 }
 
 # 5. 获取PeerManifests信息
@@ -182,6 +182,11 @@ function upgrad_service() {
 	service ceremonyclient start
 }
 
+# 11.查询余额
+function Unclaimed_alance() {
+	cd ~/ceremonyclient/node && ./node-1.4.19-linux-amd64 -node-info && date
+}
+
 # 主菜单
 function main_menu() {
 	echo "1. 安装服务节点"
@@ -195,7 +200,7 @@ function main_menu() {
     echo "9. 卸载节点"
     echo "10. 升级节点"
 
-    read -p "请输入选项（1-9）: " OPTION
+    read -p "请输入选项（1-11）: " OPTION
 
     case $OPTION in
     1) install_node ;;
@@ -208,6 +213,7 @@ function main_menu() {
 	8) stop_service ;;
 	9) clear_service ;;
 	10) upgrad_service ;;
+	11) Unclaimed_alance ;;
     *) echo "无效选项。" ;;
     esac
 }
