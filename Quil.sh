@@ -51,8 +51,8 @@ source /etc/bash.bashrc
 mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
 
 ##切换分支
-cd ~ && git clone https://source.quilibrium.com/quilibrium/ceremonyclient.git
-cd ~/ceremonyclient/ && git checkout release-cdn
+cd ~ && git https://github.com/quilibriumnetwork/ceremonyclient.git
+cd ~/ceremonyclient/ && git checkout release 
 
 ##设置cpu使用率
 ##find /root/ceremonyclient/node/ -type f -name release_autorun.sh -exec sed -i 's/cpulimit -l [0-9]\+/cpulimit -l 90/g' {} +
@@ -102,7 +102,7 @@ grep -E 'listenGrpcMultiaddr|listenRESTMultiaddr' ~/ceremonyclient/node/.config/
 
 # 4. 检查peerid
 function check_peerid() {
-	cd ~/ceremonyclient/node && ./node-1.4.19-linux-amd64 --peer-id
+	cd ~/ceremonyclient/node && ./node-1.4.19.1-linux-amd64 --peer-id
 }
 
 # 5. 获取PeerManifests信息
@@ -165,26 +165,22 @@ function clear_service() {
 
 # 10.升级节点
 function upgrad_service() {
-	# switch to Gitlab repo of Cassie
-	cd ~/ceremonyclient
-	git remote set-url origin https://source.quilibrium.com/quilibrium/ceremonyclient.git
-	git pull
-	# end of switch code block
-	service ceremonyclient stop  
-	cd ~/ceremonyclient 
-	git reset --hard origin/release-cdn
-	git fetch --all
-	git clean -df
-	git merge origin/release-cdn
-	cd ~/ceremonyclient/node
-	sed -i 's/ExecStart=\/root\/ceremonyclient\/node\/node-1.4.18-linux-amd64/ExecStart=\/root\/ceremonyclient\/node\/node-1.4.19-linux-amd64/g' /lib/systemd/system/ceremonyclient.service
-	systemctl daemon-reload
+	service ceremonyclient stop
+
+	cd /root/ceremonyclient/node/ 
+	git checkout main 
+	git branch -D release 
+	git remote set-url origin https://github.com/quilibriumnetwork/ceremonyclient.git 
+	git pull 
+	git checkout release
+
 	service ceremonyclient start
+
 }
 
 # 11.查询余额
 function Unclaimed_alance() {
-	cd ~/ceremonyclient/node && ./node-1.4.19-linux-amd64 -node-info && date
+	cd ~/ceremonyclient/node && ./node-1.4.19.1-linux-amd64 -node-info && date
 }
 
 # 主菜单
