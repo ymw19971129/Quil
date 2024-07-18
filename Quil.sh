@@ -51,7 +51,7 @@ source /etc/bash.bashrc
 mkdir -p /root/backup/ /root/scripts/ /root/scripts/log/
 
 ##切换分支
-cd ~ && git https://github.com/quilibriumnetwork/ceremonyclient.git
+cd ~ && git clone https://github.com/quilibriumnetwork/ceremonyclient.git
 cd ~/ceremonyclient/ && git checkout release 
 
 ##设置cpu使用率
